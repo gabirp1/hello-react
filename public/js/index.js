@@ -27,18 +27,17 @@ var BooksApp = /*#__PURE__*/function (_React$Component) {
 
   var _super = _createSuper(BooksApp);
 
-  function BooksApp() {
+  function BooksApp(props) {
+    var _this;
+
     _classCallCheck(this, BooksApp);
 
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(BooksApp, [{
-    key: "render",
-    value: function render() {
-      var title = 'Consejero literario digital';
-      var subtitle = 'Te asesoro sobre entidades alfanuméricas';
-      var libros = [{
+    _this = _super.call(this, props);
+    _this.escogerLibro = _this.escogerLibro.bind(_assertThisInitialized(_this));
+    _this.borrarLibros = _this.borrarLibros.bind(_assertThisInitialized(_this));
+    _this.introducirLibro = _this.introducirLibro.bind(_assertThisInitialized(_this));
+    _this.state = {
+      books: [{
         title: 'El principito',
         author: 'Antoine de Saint-Exupéry'
       }, {
@@ -47,20 +46,65 @@ var BooksApp = /*#__PURE__*/function (_React$Component) {
       }, {
         title: 'Platero y yo',
         author: 'Juan Ramón Jiménez'
-      }];
+      }]
+    };
+    return _this;
+  }
+
+  _createClass(BooksApp, [{
+    key: "escogerLibro",
+    value: function escogerLibro() {
+      console.log('escoger libro');
+      var indice = Math.floor(Math.random() * this.state.books.length);
+      alert(this.state.books[indice].title + ' / ' + this.state.books[indice].author);
+    }
+  }, {
+    key: "borrarLibros",
+    value: function borrarLibros() {
+      console.log('aquí ponemos la trituradora');
+      this.setState(function () {
+        return {
+          books: []
+        };
+      });
+    }
+  }, {
+    key: "introducirLibro",
+    value: function introducirLibro(nuevoLibro) {
+      if (!nuevoLibro) {
+        return 'Hay que introducir libro válido';
+      } else if (this.state.books.map(function (book) {
+        return book.title;
+      }).indexOf(nuevoLibro.title) > -1) {
+        return 'Libro repetido';
+      }
+
+      this.setState(function (estadoPrevio) {
+        return {
+          books: estadoPrevio.books.concat(nuevoLibro)
+        };
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var subtitle = 'Te asesoro sobre entidades alfanuméricas';
       return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Header, {
-        titulo: title,
-        subtitle: subtitle
-      }), /*#__PURE__*/React.createElement(RecommendBook, null), /*#__PURE__*/React.createElement(Books, {
-        books: libros
-      }), /*#__PURE__*/React.createElement(AddBook, null));
+        subtitulo: subtitle
+      }), /*#__PURE__*/React.createElement(RecommendBook, {
+        escogerLibro: this.escogerLibro,
+        hayLibros: this.state.books.length > 0
+      }), /*#__PURE__*/React.createElement(Books, {
+        libros: this.state.books,
+        borrarLibros: this.borrarLibros
+      }), /*#__PURE__*/React.createElement(AddBook, {
+        introducirLibro: this.introducirLibro
+      }));
     }
   }]);
 
   return BooksApp;
 }(React.Component);
-/* CLASES ------------------------------------------------------- */
-
 
 var Header = /*#__PURE__*/function (_React$Component2) {
   _inherits(Header, _React$Component2);
@@ -76,16 +120,16 @@ var Header = /*#__PURE__*/function (_React$Component2) {
   _createClass(Header, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, this.props.titulo), /*#__PURE__*/React.createElement("h2", null, this.props.subtitle));
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, this.props.titulo), /*#__PURE__*/React.createElement("h2", null, this.props.subtitulo));
     }
   }]);
 
   return Header;
 }(React.Component);
-/* Header.defaultProps = {
-    titulo:0
-} */
 
+Header.defaultProps = {
+  titulo: 'Consejero literario digital'
+};
 
 var RecommendBook = /*#__PURE__*/function (_React$Component3) {
   _inherits(RecommendBook, _React$Component3);
@@ -101,7 +145,10 @@ var RecommendBook = /*#__PURE__*/function (_React$Component3) {
   _createClass(RecommendBook, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", null, "Recomendar libro"));
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
+        disabled: !this.props.hayLibros,
+        onClick: this.props.escogerLibro
+      }, "Recomendar libro"));
     }
   }]);
 
@@ -122,12 +169,15 @@ var Books = /*#__PURE__*/function (_React$Component4) {
   _createClass(Books, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, this.props.books.length > 0 ? "Hay ".concat(this.props.books.length, " libros") : "No hay libros disponibles en enste momentos"), /*#__PURE__*/React.createElement("ul", null, this.props.books.map(function (libro) {
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, this.props.libros.length ? "Hay ".concat(this.props.libros.length, " libros") : 'No hay libros disponibles en este momento'), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("button", {
+        onClick: this.props.borrarLibros
+      }, "Borrar libros")), /*#__PURE__*/React.createElement("ul", null, this.props.libros.map(function (libro) {
         return /*#__PURE__*/React.createElement(Book, {
           key: libro.title,
-          titulo: libro.title
+          titulo: libro.title,
+          autor: libro.author
         });
-      }), " "));
+      })));
     }
   }]);
 
@@ -148,7 +198,9 @@ var Book = /*#__PURE__*/function (_React$Component5) {
   _createClass(Book, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, this.props.titulo);
+      return /*#__PURE__*/React.createElement("li", null, this.props.titulo, " / ", this.props.autor, "  ", /*#__PURE__*/React.createElement("button", {
+        onClick: this.props.borrarLibros
+      }, "Borrar"));
     }
   }]);
 
@@ -160,16 +212,43 @@ var AddBook = /*#__PURE__*/function (_React$Component6) {
 
   var _super6 = _createSuper(AddBook);
 
-  function AddBook() {
+  function AddBook(props) {
+    var _this2;
+
     _classCallCheck(this, AddBook);
 
-    return _super6.apply(this, arguments);
+    _this2 = _super6.call(this, props);
+    _this2.introducirLibro = _this2.introducirLibro.bind(_assertThisInitialized(_this2));
+    _this2.state = {
+      error: undefined
+    };
+    return _this2;
   }
 
   _createClass(AddBook, [{
+    key: "introducirLibro",
+    value: function introducirLibro(evento) {
+      evento.preventDefault();
+      var title = evento.target.elements.title.value.trim();
+      var author = evento.target.elements.author.value.trim();
+      console.log('title', title, 'author', author);
+      var error = this.props.introducirLibro({
+        title: title,
+        author: author
+      });
+      console.log(error);
+      this.setState(function () {
+        return {
+          error: error
+        };
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", {
+      return /*#__PURE__*/React.createElement("div", null, this.state.error && /*#__PURE__*/React.createElement("p", null, this.state.error), /*#__PURE__*/React.createElement("form", {
+        onSubmit: this.introducirLibro
+      }, /*#__PURE__*/React.createElement("label", {
         htmlFor: "title"
       }, "T\xEDtulo"), /*#__PURE__*/React.createElement("input", {
         type: "text",
@@ -181,7 +260,7 @@ var AddBook = /*#__PURE__*/function (_React$Component6) {
         type: "text",
         name: "author",
         id: "author"
-      }), /*#__PURE__*/React.createElement("button", null, "A\xF1adir libro"));
+      }), /*#__PURE__*/React.createElement("button", null, "A\xF1adir libro")));
     }
   }]);
 

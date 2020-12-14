@@ -106,3 +106,12 @@ miGitHub.classList.add('a')
 firstSection.appendChild(miGitHub)
 
 
+////Escribir en consola los valores introducidos en un formulario
+
+const form = document.querySelector('#unFormulario')
+form.addEventListener('submit',(e)=>{
+    console.log(e.target.elements.nombre);
+    console.log(e.target.elements.email);
+    console.log(e.target.elements.mensaje);
+
+})
