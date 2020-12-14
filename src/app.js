@@ -60,7 +60,7 @@ class BooksApp extends React.Component {
     }
 }
 
-class Header extends React.Component {
+/* class Header extends React.Component {
     render() {
         return (
             <div>
@@ -69,13 +69,22 @@ class Header extends React.Component {
             </div>
         )
     }
+} */
+
+const Header = (props) => {
+    return (
+        <div>
+            <h1>{props.titulo}</h1>
+            <h2>{props.subtitulo}</h2>
+        </div>
+    )
 }
 
 Header.defaultProps = {
     titulo: 'Consejero literario digital'
 }
 
-class RecommendBook extends React.Component {
+/* class RecommendBook extends React.Component {
 
     render() {
         return (
@@ -84,9 +93,19 @@ class RecommendBook extends React.Component {
             </div>
         )
     }
+} */
+
+const RecommendBook = (props) => {
+            return (
+            <div>
+                <button disabled={!props.hayLibros} onClick={props.escogerLibro}>Recomendar libro</button>
+            </div>
+        )
+    
 }
 
-class Books extends React.Component {
+
+/* class Books extends React.Component {
     render() {
         return (
             <div>
@@ -102,6 +121,20 @@ class Books extends React.Component {
             </div>
         )
     }
+} */
+
+const Books = (props)=>{
+    return  <div>
+
+    <p>{props.libros.length ? `Hay ${props.libros.length} libros` : 'No hay libros disponibles en este momento'}</p>
+    <p><button onClick={props.borrarLibros} >Borrar libros</button></p>
+    <ul>
+        {props.libros.map((libro) => {
+            return <Book key={libro.title} titulo={libro.title} autor={libro.author} />
+        })}
+
+    </ul>
+</div>
 }
 
 class Book extends React.Component {
