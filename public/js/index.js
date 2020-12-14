@@ -1,113 +1,193 @@
 "use strict";
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-/* 
-Ejercicios de JavaScript interactuando con el DOM:
-    Document Object Model 
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-    Crear un elemento:
-        const elemento = document.createElement('<etiqueta html>')
-    Capturar un elemento
-        const elemento = document.querySelector('<selector css>')
-    Capturar todos los elementos
-        const elementos = document.querySelectorAll('<selector css>')
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-        +++++++++++++
-    
-    A partir de un elemento podemos:
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-    Editar su atributo class
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-        elemento.classList.add('<nombre de la clase>')
-        elemento.classList.remove('<nombre de la clase>')
-        elemento.classList.toggle('<nombre de la clase>')
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-    Editar su atributo style
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-        elemento.style.<propiedad css>
-    
-    Editar otros atributos del elemento
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-        elemento.setAttribute('<nombre atributo>', '<valor atributo>')
-*/
-// cambiar una propiedad CSS al hacer click en un botón
-var verdeButton = document.querySelector('#verde');
-var blancoButton = document.querySelector('#blanco');
-var main = document.querySelector('body');
-verdeButton.addEventListener('click', function (e) {
-  main.style.backgroundColor = 'green';
-});
-blancoButton.addEventListener('click', function (e) {
-  main.style.backgroundColor = 'white';
-}); // retocar un párrafo en varias propiedades de estilos a la vez
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var retocarButton = document.querySelector('#retocar');
-var ultimoParrafo = document.querySelector('section p:last-of-type');
-retocarButton.addEventListener('click', function (e) {
-  ultimoParrafo.classList.add('retocar');
-}); // filtrar las frutas que figuran en una lista del documento
+var BooksApp = /*#__PURE__*/function (_React$Component) {
+  _inherits(BooksApp, _React$Component);
 
-var frutasUL = document.querySelectorAll('section ul li');
-var filter = document.querySelector('#buscarFruta');
-var salida = document.querySelector('#salida');
-var frutas = [];
+  var _super = _createSuper(BooksApp);
 
-var _iterator = _createForOfIteratorHelper(frutasUL),
-    _step;
+  function BooksApp() {
+    _classCallCheck(this, BooksApp);
 
-try {
-  for (_iterator.s(); !(_step = _iterator.n()).done;) {
-    var fruta = _step.value;
-    frutas.push(fruta.textContent);
+    return _super.apply(this, arguments);
   }
-} catch (err) {
-  _iterator.e(err);
-} finally {
-  _iterator.f();
-}
 
-console.log(frutas);
-filter.addEventListener('input', function (e) {
-  console.log(e.target.value);
-});
-filter.addEventListener('input', function (e) {
-  var filtro = e.target.value;
-  var resultado = frutas.filter(function (fruta) {
-    return fruta.toLowerCase().includes(filtro);
-  });
-  salida.textContent = resultado.join(', ');
-}); // crear un footer y añadirlo en un bloque
+  _createClass(BooksApp, [{
+    key: "render",
+    value: function render() {
+      var title = 'Consejero literario digital';
+      var subtitle = 'Te asesoro sobre entidades alfanuméricas';
+      var libros = [{
+        title: 'El principito',
+        author: 'Antoine de Saint-Exupéry'
+      }, {
+        title: 'El Quijote',
+        author: 'Miguel de Cervantes Saavedra'
+      }, {
+        title: 'Platero y yo',
+        author: 'Juan Ramón Jiménez'
+      }];
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Header, {
+        titulo: title,
+        subtitle: subtitle
+      }), /*#__PURE__*/React.createElement(RecommendBook, null), /*#__PURE__*/React.createElement(Books, {
+        books: libros
+      }), /*#__PURE__*/React.createElement(AddBook, null));
+    }
+  }]);
 
-var footer = document.createElement('footer');
-footer.textContent = 'Copyright 2020';
-document.body.appendChild(footer); // crear un botón que crea otro que elimina el primero
+  return BooksApp;
+}(React.Component);
+/* CLASES ------------------------------------------------------- */
 
-var darthVader = document.querySelector('#darthvader');
-var firstSection = document.querySelector('section:first-child');
-var galaxy = document.querySelector('#galaxy');
-darthVader.addEventListener('click', function (e) {
-  /* 
-  1. createElement
-  2. lo configuramos
-  3. bloque.appendChild
-  */
-  var lukeSkyWalker = document.createElement('button');
-  lukeSkyWalker.textContent = 'LukeSkyWalker';
-  lukeSkyWalker.addEventListener('click', function () {
-    darthVader.style.display = 'none';
-  });
-  galaxy.appendChild(lukeSkyWalker);
-}); // crear un enlace a mi Github
 
-var miGitHub = document.createElement('a');
-miGitHub.textContent = 'mi github';
-miGitHub.setAttribute('href', 'https://github.com/xavieur');
-miGitHub.classList.add('a');
-firstSection.appendChild(miGitHub);
+var Header = /*#__PURE__*/function (_React$Component2) {
+  _inherits(Header, _React$Component2);
+
+  var _super2 = _createSuper(Header);
+
+  function Header() {
+    _classCallCheck(this, Header);
+
+    return _super2.apply(this, arguments);
+  }
+
+  _createClass(Header, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, this.props.titulo), /*#__PURE__*/React.createElement("h2", null, this.props.subtitle));
+    }
+  }]);
+
+  return Header;
+}(React.Component);
+/* Header.defaultProps = {
+    titulo:0
+} */
+
+
+var RecommendBook = /*#__PURE__*/function (_React$Component3) {
+  _inherits(RecommendBook, _React$Component3);
+
+  var _super3 = _createSuper(RecommendBook);
+
+  function RecommendBook() {
+    _classCallCheck(this, RecommendBook);
+
+    return _super3.apply(this, arguments);
+  }
+
+  _createClass(RecommendBook, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", null, "Recomendar libro"));
+    }
+  }]);
+
+  return RecommendBook;
+}(React.Component);
+
+var Books = /*#__PURE__*/function (_React$Component4) {
+  _inherits(Books, _React$Component4);
+
+  var _super4 = _createSuper(Books);
+
+  function Books() {
+    _classCallCheck(this, Books);
+
+    return _super4.apply(this, arguments);
+  }
+
+  _createClass(Books, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, this.props.books.length > 0 ? "Hay ".concat(this.props.books.length, " libros") : "No hay libros disponibles en enste momentos"), /*#__PURE__*/React.createElement("ul", null, this.props.books.map(function (libro) {
+        return /*#__PURE__*/React.createElement(Book, {
+          key: libro.title,
+          titulo: libro.title
+        });
+      }), " "));
+    }
+  }]);
+
+  return Books;
+}(React.Component);
+
+var Book = /*#__PURE__*/function (_React$Component5) {
+  _inherits(Book, _React$Component5);
+
+  var _super5 = _createSuper(Book);
+
+  function Book() {
+    _classCallCheck(this, Book);
+
+    return _super5.apply(this, arguments);
+  }
+
+  _createClass(Book, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement("div", null, this.props.titulo);
+    }
+  }]);
+
+  return Book;
+}(React.Component);
+
+var AddBook = /*#__PURE__*/function (_React$Component6) {
+  _inherits(AddBook, _React$Component6);
+
+  var _super6 = _createSuper(AddBook);
+
+  function AddBook() {
+    _classCallCheck(this, AddBook);
+
+    return _super6.apply(this, arguments);
+  }
+
+  _createClass(AddBook, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", {
+        htmlFor: "title"
+      }, "T\xEDtulo"), /*#__PURE__*/React.createElement("input", {
+        type: "text",
+        name: "title",
+        id: "title"
+      }), /*#__PURE__*/React.createElement("label", {
+        htmlFor: "author"
+      }, "Autor"), /*#__PURE__*/React.createElement("input", {
+        type: "text",
+        name: "author",
+        id: "author"
+      }), /*#__PURE__*/React.createElement("button", null, "A\xF1adir libro"));
+    }
+  }]);
+
+  return AddBook;
+}(React.Component);
+
+ReactDOM.render( /*#__PURE__*/React.createElement(BooksApp, null), document.querySelector('#appRoot'));
 
 //# sourceMappingURL=index.js.map
